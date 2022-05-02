@@ -98,7 +98,6 @@ func readRequestBody(w http.ResponseWriter, r *http.Request) ([]byte, error, boo
 }
 
 func writeClientError(w http.ResponseWriter, message string) {
-	w.WriteHeader(400)
 	response := make(map[string]string)
 	response["error"] = message
 	json, err := json2.Marshal(response)
@@ -106,6 +105,7 @@ func writeClientError(w http.ResponseWriter, message string) {
 		panic(err)
 	}
 	w.Header().Add("Content-Type", "application/json")
+	w.WriteHeader(400)
 	_, err = w.Write(json)
 	if err != nil {
 		panic(err)
@@ -113,7 +113,6 @@ func writeClientError(w http.ResponseWriter, message string) {
 }
 
 func writeSuccessResponse(w http.ResponseWriter, data interface{}) {
-	w.WriteHeader(200)
 	response := make(map[string]interface{})
 	response["data"] = data
 	json, err := json2.Marshal(response)
@@ -121,6 +120,7 @@ func writeSuccessResponse(w http.ResponseWriter, data interface{}) {
 		panic(err)
 	}
 	w.Header().Add("Content-Type", "application/json")
+	w.WriteHeader(200)
 	_, err = w.Write(json)
 	if err != nil {
 		panic(err)
